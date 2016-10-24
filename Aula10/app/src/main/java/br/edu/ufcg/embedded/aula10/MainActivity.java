@@ -31,7 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity implements RequestQueue.RequestFinishedListener {
+public class MainActivity extends AppCompatActivity implements RequestQueue.RequestFinishedListener, ContactAdapter.OnContactSelectedListener {
 
     public static final String USER_BUNDLE_KEY = "user";
 
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements RequestQueue.Requ
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("json", "Deu aguia " + error.getLocalizedMessage());
+                        Log.d("json", "Erro:" + error.getLocalizedMessage());
                     }
                 }
         );
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements RequestQueue.Requ
 
     private void updateContactList(ArrayList<Contact> response) {
 
-        ContactAdapter contactAdapter = new ContactAdapter(response);
+        ContactAdapter contactAdapter = new ContactAdapter(this, response);
         mContactRecyclerView.setAdapter(contactAdapter);
 
     }
@@ -181,6 +181,19 @@ public class MainActivity extends AppCompatActivity implements RequestQueue.Requ
     @Override
     public void onRequestFinished(Request request) {
         hideProgress();
+    }
+
+    @Override
+    public void onContactSelected(Contact contact) {
+
+        Intent intent = new Intent(this, ContactsActivity.class);
+
+        Bundle args = new Bundle();
+        args.putSerializable(ContactsActivity.CONTACT_BUNDLE_KEY, contact);
+
+        intent.putExtras(args);
+
+        startActivity(intent);
     }
 
 }

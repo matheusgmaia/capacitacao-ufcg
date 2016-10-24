@@ -23,6 +23,8 @@ public class ApiManager {
     private static final String loginResource = "users/login";
     private static final String addContact = "contacts/create";
     private static final String editContact = "contacts/update";
+    private static final String contacts = "contacts/remove";
+
 
 
     static ApiManager instance;
@@ -113,6 +115,14 @@ public class ApiManager {
 //        queue.add(post);
 
         return post;
+    }
+
+    public String getContactsResource() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(host);
+        buffer.append(contacts);
+
+        return buffer.toString();
     }
 
 }
